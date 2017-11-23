@@ -55,6 +55,21 @@
          .tooltip .axis--y .tick line{
             stroke: #ccc
          }
+         .tooltip:after {
+    left: 0%;
+    /* top: 50%; */
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(255, 255, 255, 0);
+    border-left-color: black;
+    border-width: 20px;
+    margin-top: -80px;
+    transform: rotate(270deg);
+}
       </style>
    </head>
    <body>
@@ -81,7 +96,7 @@
 
 
              div
-                 .style("left", (d3.event.pageX - 68) + "px")
+                 .style("left", (d3.event.pageX - 60) + "px")
                  .style("top", (d3.event.pageY + 36) + "px");
              var width = 300 - margin.left - margin.right;
              var height = 200 - margin.top - margin.bottom;
@@ -269,13 +284,12 @@
                  .attr("height", y.bandwidth())
                  .style("fill", getFill)
                  .on("mouseover", handleMouseOver)
-                 // .on("mouseout", handleMouseOut)
+                 //  .on("mouseout", handleMouseOut)
                  .on("mousemove", handleMouseMove);
 
              function handleMouseMove(s) {
 
-
-
+          
 
              }
 

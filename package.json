@@ -1,0 +1,16 @@
+{
+  "name": "pollution-monitor-grid",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Harry Stevens <harryjosephstevens@gmail.com> (http://harryjstevens.com/)",
+  "license": "ISC",
+  "dependencies": {
+    "d3-array": "^1.2.1",
+    "indian-ocean": "^3.0.2",
+    "underscore": "^1.8.3"
+  }
+}

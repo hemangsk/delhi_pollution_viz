@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html>
    <head>
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/1.3.4/chroma.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
       <style>
          body {
          margin: 0px;
          }
          rect:hover {
             stroke: black;
+            stroke-width:3px;
          }
          .x-label {
          text-anchor: end;
@@ -56,32 +61,37 @@
             stroke: #ccc
          }
          .tooltip:after {
-    left: 30px;
-    /* top: 50%; */
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-    border-color: rgba(255, 255, 255, 0);
-    border-left-color: white;
-    border-width: 20px;
-    margin-top: -80px;
-    transform: rotate(270deg);
-}
+            left: 30px;
+             /* top: 50%; */
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            border-color: rgba(255, 255, 255, 0);
+            border-left-color: white;
+            border-width: 20px;
+            margin-top: -80px;
+            transform: rotate(270deg);
+         }
+         .pct {
+            background: lightgrey;
+         }
+
       </style>
    </head>
    <body>
+      <div id="vis3"></div>
       <div class="card">
       </div>
       <div class="tooltip">
       </div>
       <div id="chart"></div>
-      <script src="https://d3js.org/d3.v4.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/1.3.4/chroma.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
       <script>
+         
+
          var div = d3.select(".tooltip")
              .style("display", "none");
 
@@ -91,14 +101,14 @@
                  top: 5,
                  right: 20,
                  bottom: 20,
-                 left: 40
+                 left: 60
              };
 
 
              div
                  .style("left", (d3.event.pageX - 60) + "px")
                  .style("top", (d3.event.pageY + 36) + "px");
-             var width = 300 - margin.left - margin.right;
+             var width = 400 - margin.left - margin.right;
              var height = 200 - margin.top - margin.bottom;
 
              var x = d3.scaleBand().rangeRound([0, width], .05).padding([0.1]);
@@ -123,16 +133,41 @@
                      station: s.station,
                      year: s.year
                  })
-                 console.log(data);
 
                  data.forEach(function(d) {
                      d.value = +d.value
+                     console.log(d)
+                     switch(d.month) {
+                           case 'Jan' : val = 31; break;
+                           case 'Feb' : {
+                              if (s.year == '2012' || s.year == '2016') {
+                                 val = 29;
+                              } else {
+                                 val = 28;
+                              }
+                           };
+                           break;
+                           case 'Mar' : val = 31; break;
+                           case 'Apr' : val = 30; break;
+                           case 'May' : val = 31; break;
+                           case 'Jun' : val = 30; break;
+                           case 'Jul' : val = 31; break;
+                           case 'Aug' : val = 31; break;
+                           case 'Sep' : val = 30; break;
+                           case 'Oct' : val = 31; break;
+                           case 'Nov' : val = 30; break;
+                           case 'Dec' : val = 31; break;
+                        }
+                     
+                     console.log(val);
+                     console.log((+d.value / val) * 100)    
+                     d.value = (+d.value / val) * 100;
                  });
 
                  x.domain(data.map(function(d) {
                      return d.month;
                  }));
-                 y.domain([0, 31]);
+                 y.domain([0, 100]);
 
 
                  g.append("g")
@@ -147,8 +182,8 @@
                  g.append("g")
                      .attr("class", "axis axis--y")
                      .call(d3.axisLeft(y).ticks(4).tickFormat(function(d,i){
-                        if (d==30){
-                           return d+' days'
+                        if (d==100){
+                           return d+'% days'
                         } else {
                            return d
                         }
@@ -167,8 +202,8 @@
                      .attr("x", function(d) {
                          return x(d.month);
                      })
-                     .attr("y", function(d) {
-                         return y(d.value);
+                     .attr("y", function(d) {                        
+                        return y(d.value);
                      })
                      .attr("width", x.bandwidth())
                      .attr("height", function(d) {
@@ -201,12 +236,14 @@
                      bottom: 100,
                      left: 200
                  },
-                 width = 475 - margin.left - margin.right,
-                 height = 900 - margin.bottom,
+                 width = 535 - margin.left - margin.right,
+                 height = 700 - margin.bottom,
 
                  svg = d3.select("#chart").append("svg")
-                 .attr("width", width + margin.left + margin.right)
-                 .attr("height", height + margin.top + margin.bottom)
+                 .attr("width", "535")
+                 .attr("height", "700")
+                 .attr("preserveAspectRatio", "xMinYMin meet")
+                 .attr("viewBox", "0 0 535 700")
                  .append("g")
                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -234,7 +271,13 @@
              });
 
              var buckets = chroma.limits(bucket_data, "e", colors.length - 1);
+
              buckets.unshift(0);
+
+
+
+         
+
 
              var x_label = svg.selectAll(".x-label")
                  .data(stations, function(d) {
@@ -299,8 +342,8 @@
              }
 
              function handleMouseOver(s) {
-                 var html = '<div class="station-name">' + s.station + '</div>' +
-                     '<div class="year"> Number of days on which pollution monitor was active (' + s.year + ')</div>';
+                 var html = ' <div class="station-name" style="max-width:300px"> In ' + s.station + ', the Pollution Monitor was working <span class="pct">' + (s.value * 100).toFixed(1) + '%</span> of the total days in ' + s.year + '.</div>';
+                     
                  div.html(html);
                  drawChart(s, s)
 

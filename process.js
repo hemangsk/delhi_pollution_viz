@@ -71,7 +71,7 @@ years.forEach(year => {
 		obj.year = year;
 		obj.station = station;
 		obj.days = d3.sum(match_data.map(function(d){ return d.value; }));
-		obj.available_days = year == "2012" || year == "2016" ? 366 : year == "2017" ? 318 : 365;
+		obj.available_days = year == "2012" || year == "2016" ? 366 : year == "2017" ? 319 : 365;
 		obj.value = obj.days / obj.available_days;
 		out.push(obj);
 	});

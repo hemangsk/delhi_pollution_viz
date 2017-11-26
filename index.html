@@ -98,7 +98,7 @@
          function drawChart(s) {
             console.log(window.innerHeight);
             console.log(window.innerWidth);
-        
+
              // body...
              var margin = {
                  top: 5,
@@ -243,8 +243,8 @@
                  height = 700 - margin.bottom,
 
                  svg = d3.select("#chart").append("svg")
-                 .attr("width", "535")
-                 .attr("height", "700")
+                 .attr("width", window.innerWidth)
+                 .attr("height", window.innerHeight)
                  .attr("preserveAspectRatio", "xMinYMin meet")
                  .attr("viewBox", "0 0 535 700")
                  .append("g")
@@ -379,6 +379,10 @@
      svg {
         width: 100%;
         height: 100%;
+    }
+
+    html {
+        max-width: 400px;
     }
 }
 </style>

@@ -65,7 +65,7 @@
          }
          .tooltip:after {
             left: 30px;
-             /* top: 50%; */
+            top: 40px;
             border: solid transparent;
             content: " ";
             height: 0;
@@ -442,7 +442,7 @@
                  .attr("height", y.bandwidth())
                  .style("fill", getFill)
                  .on("mouseover", handleMouseOver)
-                // .on("mouseout", handleMouseOut)
+                 .on("mouseout", handleMouseOut)
                  .on("mousemove", handleMouseMove);
 
              function handleMouseMove(s) {
@@ -458,9 +458,9 @@
 
              function handleMouseOver(s) {
                 if (window.innerWidth < 450) {
-                      var html = ' <div class="station-name" style="max-width:300px"> <span class="flex-8">In ' + s.station + ', the Pollution Monitor was working <span class="pct">' + (s.value * 100).toFixed(1) + '%</span> of the total days in ' + s.year + '.</span><div class="x flex-2">X</div></div>';
+                      var html = '<div class="station-name" style="max-width:300px"> <span class="flex-8">In ' + s.station + ', the Pollution Monitor was working <span class="pct">' + (s.value * 100).toFixed(1) + '%</span> of the total days in ' + s.year + '.</span><div class="x flex-2">X</div></div>';
                   } else {
-                      var html = ' <div class="station-name" style="max-width:400px"> <span >In ' + s.station + ', the Pollution Monitor was working <span class="pct">' + (s.value * 100).toFixed(1) + '%</span> of the total days in ' + s.year + '.</span>';
+                      var html = '<div class="station-name" style="max-width:400px"> <span >In ' + s.station + ', the Pollution Monitor was working <span class="pct">' + (s.value * 100).toFixed(1) + '%</span> of the total days in ' + s.year + '.</span>';
                   }
                
                      
